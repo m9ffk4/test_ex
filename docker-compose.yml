@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  app:
+    container_name: app
+    image: app
+    network_mode: bridge
+  clickhouse:
+    container_name: clickhouse
+    hostname: clickhouse
+    image: clickhouse/clickhouse-server:22.9.2.7
+    ports:
+      - '8123:8123'
+      - '9001:9000'
+      - '9009:9009'
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    network_mode: bridge
+  vector:
+    container_name: vector
+    image: timberio/vector:nightly-debian
+    environment:
+      - DOCKER_HOST="unix:///var/run/docker.sock"
+      - RUST_BACKTRACE=full
+    ports:
+      - '8383:8383'
+    volumes:
+      - ./vector.toml:/etc/vector/vector.toml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    network_mode: bridge
+    depends_on:
+      - clickhouse

@@ -1,0 +1,12 @@
+[sources.app_logs]
+type = "docker_logs"
+docker_host = "unix:///var/run/docker.sock"
+
+[sinks.clickhouse]
+type = "clickhouse"
+inputs = [ "app_logs" ]
+database = "logs"
+endpoint = "http://clickhouse:8123"
+table = "logs"
+compression = "gzip"
+skip_unknown_fields = true
