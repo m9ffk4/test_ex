@@ -1,31 +1,37 @@
 version: "3.9"
 services:
   app:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
     container_name: app
     image: app
     network_mode: bridge
+    depends_on:
+      clickhouse:
+        condition: service_healthy
   clickhouse:
     container_name: clickhouse
-    hostname: clickhouse
     image: clickhouse/clickhouse-server:22.9.2.7
     ports:
-      - '8123:8123'
-      - '9001:9000'
-      - '9009:9009'
+      - "8123:8123"
+      - "9000:9000"
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
     network_mode: bridge
-  vector:
-    container_name: vector
-    image: timberio/vector:nightly-debian
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8123/?query=SELECT%201 || exit 1
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:8.2.6
     environment:
-      - DOCKER_HOST="unix:///var/run/docker.sock"
-      - RUST_BACKTRACE=full
+      - GF_INSTALL_PLUGINS=grafana-clickhouse-datasource
     ports:
-      - '8383:8383'
-    volumes:
-      - ./vector.toml:/etc/vector/vector.toml:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - "3000:3000"
     network_mode: bridge
     depends_on:
       - clickhouse

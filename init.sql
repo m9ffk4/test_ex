@@ -1,8 +1,9 @@
-CREATE DATABASE IF NOT EXISTS logs;
+CREATE DATABASE IF NOT EXISTS data;
 
-CREATE TABLE IF NOT EXISTS logs.logs (
+CREATE TABLE data.data
+(
+    timestamp DateTime,
     message String
 )
-ENGINE = MergeTree()
-ORDER BY tuple()
-
+ENGINE = MergeTree
+ORDER BY timestamp;
