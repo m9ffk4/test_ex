@@ -9,7 +9,8 @@
 docker-compose up -d --force-recreate --build && make set_datasource
 ```
 
-После отработки команды можно зайти по [ссылке](http://localhost:3000/explore?orgId=1&left=%5B%22now-1h%22,%22now%22,%22ClickHouse%22,%7B%22refId%22:%22A%22,%22queryType%22:%22sql%22,%22rawSql%22:%22select%20*%20from%20data.data%20where%20toInt16OrZero(extract(message,%20%27%5C%22bid_01%5C%22:%20(%5C%5C%5C%5Cd%7B1,3%7D)%27%29%29%20%2B%20toInt16OrZero(extract(message,%20%27%5C%22ask_01%5C%22:%20(%5C%5C%5C%5Cd%7B1,3%7D)%27%29%29%20%3C%20105;%22,%22meta%22:%7B%22builderOptions%22:%7B%22mode%22:%22list%22,%22fields%22:%5B%5D,%22limit%22:100%7D%7D,%22format%22:1%7D%5D)
+После отработки команды можно зайти по <a href="http://localhost:3000/explore?orgId=1&left=%5B%22now-1h%22,%22now%22,%22ClickHouse%22,%7B%22refId%22:%22A%22,%22queryType%22:%22sql%22,%22rawSql%22:%22select%20*%20from%20data.data%20where%20toInt16OrZero(extract(message,%20%27%5C%22bid_01%5C%22:%20(%5C%5C%5C%5Cd%7B1,3%7D)%27))%20%2B%20toInt16OrZero(extract(message,%20%27%5C%22ask_01%5C%22:%20(%5C%5C%5C%5Cd%7B1,3%7D)%27))%20%3C%20105;%22,%22meta%22:%7B%22builderOptions%22:%7B%22mode%22:%22list%22,%22fields%22:%5B%5D,%22limit%22:100%7D%7D,%22format%22:1%7D%5D">ссылке</a>
+
 
 Авторизация стандартная: 
 Username: admin
